@@ -35,3 +35,12 @@ async function predict(img_base64){
         setTimeout(() => resolve(prediction));
     });
 }
+
+app.post("/pose_detection", (req, res) => {
+    predict(req.body.img_base64).then(result => res.send(result));
+});
+
+app.listen(3000, () => {
+    console.log("Listening on port 3000...");
+    console.log("")
+});
