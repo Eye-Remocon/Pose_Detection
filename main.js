@@ -10,6 +10,16 @@ app.use(express.json({ limit : "50mb" }));
 const URL = "https://teachablemachine.withgoogle.com/models/ZXEZyolyru/";
 let model, new_canvas, context;
 
+async function init(){
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+
+    model = await tmPose.load(modelURL, metadataURL);
+    new_canvas = new createCanvas(530 , 338);
+    context = new_canvas.getContext('2d');
+
+}
+
 async function predict(img_base64){
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
@@ -41,6 +51,7 @@ app.post("/pose_detection", (req, res) => {
 });
 
 app.listen(3000, () => {
+    init();
     console.log("Listening on port 3000...");
     console.log("")
 });
