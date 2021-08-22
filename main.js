@@ -8,7 +8,7 @@ app.use(express.json({ limit : "50mb" }));
 
 
 const URL = "https://teachablemachine.withgoogle.com/models/ZXEZyolyru/";
-let model, maxPredictions;
+let model, new_canvas, context;
 
 async function predict(img_base64){
     const modelURL = URL + "model.json";
