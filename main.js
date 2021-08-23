@@ -8,29 +8,25 @@ app.use(express.json({ limit : "50mb" }));
 
 
 const URL = "https://teachablemachine.withgoogle.com/models/ZXEZyolyru/";
-let model, maxPredictions;
+let model, new_canvas, context;
 
-async function predict(img_base64){
+async function init(){
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
+
     model = await tmPose.load(modelURL, metadataURL);
+    new_canvas = new createCanvas(530 , 338);
+    context = new_canvas.getContext('2d');
 
-    tmPose.load(modelURL, metadataURL).then(mod => {
-        model = mod;
-        maxPredictions = model.getTotalClasses();
+}
 
-    }).catch(err => console.log(err));
-
+async function predict(img_base64){
     const buffer = Buffer.from(img_base64, "base64");
     const img = await Canvas.loadImage(buffer);
-    var new_canvas = new createCanvas(img.width, img.height);
-    var context = new_canvas.getContext('2d');
-    img.onload = function (){
-        context.drawImage(img, 0, 0, img.width, img.height);
-    }
+    context.drawImage(img, 0, 0);
 
     const { pose, posenetOutput } = await model.estimatePose(new_canvas, false);
-    const prediction = await model.predict(posenetOutput);
+    const prediction = await model.predictTopK(posenetOutput, 3);
     return new Promise(resolve => {
         setTimeout(() => resolve(prediction));
     });
@@ -41,6 +37,7 @@ app.post("/pose_detection", (req, res) => {
 });
 
 app.listen(3000, () => {
+    init();
     console.log("Listening on port 3000...");
     console.log("")
 });
