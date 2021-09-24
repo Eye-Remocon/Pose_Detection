@@ -36,6 +36,10 @@ app.post("/pose_detection", (req, res) => {
   predict(req.body.img_base64).then(result => res.send(result));
 });
 
+app.post("/ping", (req, res) => {
+  res.send({"result":"pong"});
+});
+
 app.listen(3333, () => {
   init();
   console.log("Listening on port 3333...");
