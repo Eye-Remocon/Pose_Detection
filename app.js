@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json({ limit : "50mb" }));
 
 
-const URL = "https://teachablemachine.withgoogle.com/models/ZXEZyolyru/";
+const URL = "https://teachablemachine.withgoogle.com/models/b5Z0aS0Q6/";
 let model, new_canvas, context;
 
 async function init(){
