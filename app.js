@@ -26,7 +26,7 @@ async function predict(img_base64){
   context.drawImage(img, 0, 0);
 
   const { pose, posenetOutput } = await model.estimatePose(new_canvas, false);
-  const prediction = await model.predictTopK(posenetOutput, 3);
+  const prediction = await model.predictTopK(posenetOutput, 4);
   return new Promise(resolve => {
     setTimeout(() => resolve(prediction));
   });
